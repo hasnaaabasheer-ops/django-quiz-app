@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Quiz Master</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #222;
+        }
+
+        /* Navbar */
+
+        .navbar {
+            background: #2563eb;
+            color: white;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logout {
+            color: white;
+            text-decoration: none;
+            background: #1d4ed8;
+            padding: 9px 16px;
+            border-radius: 7px;
+        }
+
+        .logout:hover {
+            background: #1e40af;
+        }
+
+        /* Main */
+
+        .container {
+            width: 90%;
+            max-width: 900px;
+            margin: 40px auto;
+        }
+
+        .welcome {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .welcome h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .welcome p {
+            color: #666;
+        }
+
+        /* Question Card */
+
+        .question-card {
+            background: white;
+            padding: 30px;
+            margin-bottom: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .question-number {
+            color: #2563eb;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .question-text {
+            font-size: 21px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        /* Options */
+
+        .option {
+            display: block;
+            border: 2px solid #e5e7eb;
+            padding: 14px 16px;
+            margin: 10px 0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .option:hover {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+
+        .option input {
+            margin-right: 10px;
+        }
+
+        /* Submit */
+
+        .submit-section {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .submit-btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 14px 35px;
+            font-size: 17px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background: #1d4ed8;
+        }
+
+        /* Result */
+
+        .result {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            margin-top: 30px;
+        }
+
+        .result h2 {
+            color: #2563eb;
+            margin-bottom: 10px;
+        }
+
+        .score {
+            font-size: 30px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        /* Empty */
+
+        .empty {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+        }
+
+        /* Mobile */
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                padding: 15px 5%;
+            }
+
+            .logo {
+                font-size: 20px;
+            }
+
+            .user-section {
+                gap: 8px;
+                font-size: 14px;
+            }
+
+            .container {
+                width: 94%;
+                margin-top: 25px;
+            }
+
+            .question-card {
+                padding: 20px;
+            }
+
+            .question-text {
+                font-size: 18px;
+            }
+        }
+
+        .account-menu {
+            position: relative;
+        }
+
+        .account-button {
+            background: #1d4ed8;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .account-button:hover {
+            background: #1e40af;
+        }
+
+        .account-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 48px;
+            width: 190px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            z-index: 1000;
+        }
+
+        .account-dropdown.show {
+            display: block;
+        }
+
+        .account-name {
+            padding: 15px;
+            font-weight: bold;
+            color: #333;
+            border-bottom: 1px solid #eee;
+        }
+
+        .account-dropdown a {
+            display: block;
+            padding: 13px 15px;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .account-dropdown a:hover {
+            background: #f4f7fb;
+        }
+
+        .account-dropdown form {
+            margin: 0;
+        }
+
+        .delete-button {
+            width: 100%;
+            background: none;
+            border: none;
+            text-align: left;
+            padding: 13px 15px;
+            color: #dc2626;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .delete-button:hover {
+            background: #fef2f2;
+        }
+
+        .percentage {
+            font-size: 24px;
+            font-weight: bold;
+            color: #16a34a;
+            margin-top: 10px;
+        }
+
+        .result-message {
+            color: #555;
+            font-size: 17px;
+            margin: 12px 0 20px;
+        }
+
+        .try-again {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 9px;
+            font-weight: bold;
+        }
+
+        .try-again:hover {
+            background: #1d4ed8;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            Quiz Master
+        </div>
+
+        <div class="user-section">
+
+            <div class="account-menu">
+
+                <button class="account-button" onclick="toggleAccountMenu()">
+                    👤 {{ user.username }} ▾
+                </button>
+
+                <div class="account-dropdown" id="accountDropdown">
+
+                    <div class="account-name">
+                        {{ user.username }}
+                    </div>
+
+                    <a href="{% url 'logout' %}">
+                        🚪 Logout
+                    </a>
+
+                    <form method="POST" action="{% url 'delete_account' %}" onsubmit="return confirmDelete();">
+
+                        {% csrf_token %}
+
+                        <button type="submit" class="delete-button">
+                            🗑️ Delete Account
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <!-- Main Content -->
+
+    <div class="container">
+
+        <div class="welcome">
+
+            <h1>Welcome to the Quiz!</h1>
+
+            <p>Test your knowledge and see how much you know.</p>
+
+        </div>
+
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+
+            {% for question in questions %}
+
+            <div class="question-card">
+
+                <div class="question-number">
+                    Question {{ forloop.counter }}
+                </div>
+
+                <div class="question-text">
+                    {{ question.question_text }}
+                </div>
+
+
+                <label class="option">
+
+                    <input type="radio" name="question_{{ question.id }}" value="{{ question.option1 }}">
+
+                    {{ question.option1 }}
+
+                </label>
+
+
+                <label class="option">
+
+                    <input type="radio" name="question_{{ question.id }}" value="{{ question.option2 }}">
+
+                    {{ question.option2 }}
+
+                </label>
+
+
+                <label class="option">
+
+                    <input type="radio" name="question_{{ question.id }}" value="{{ question.option3 }}">
+
+                    {{ question.option3 }}
+
+                </label>
+
+
+                <label class="option">
+
+                    <input type="radio" name="question_{{ question.id }}" value="{{ question.option4 }}">
+
+                    {{ question.option4 }}
+
+                </label>
+
+            </div>
+
+            {% empty %}
+
+            <div class="empty">
+
+                <h2>No Questions Available</h2>
+
+                <p>Please add questions from the admin panel.</p>
+
+            </div>
+
+            {% endfor %}
+
+
+            {% if questions %}
+
+            <div class="submit-section">
+
+                <button type="submit" class="submit-btn">
+                    Submit Quiz
+                </button>
+
+            </div>
+
+            {% endif %}
+
+        </form>
+
+
+        <!-- Result -->
+
+        {% if score is not None %}
+
+        <div class="result">
+
+            <h2>🎉 Quiz Completed!</h2>
+
+            <p>Your final score is:</p>
+
+            <div class="score">
+                {{ score }} / {{ questions|length }}
+            </div>
+
+            <div class="percentage">
+                {{ percentage|floatformat:0 }}%
+            </div>
+
+            <p class="result-message">
+                {{ result_message }}
+            </p>
+
+            <a href="{% url 'quiz' %}" class="try-again">
+                🔄 Try Again
+            </a>
+
+        </div>
+
+        {% endif %}
+    </div>
+
+    <script>
+        function toggleAccountMenu() {
+            const menu = document.getElementById("accountDropdown");
+
+            menu.classList.toggle("show");
+        }
+
+        function confirmDelete() {
+            return confirm(
+                "Are you sure you want to delete your account? This action cannot be undone."
+            );
+        }
+
+        document.addEventListener("click", function (event) {
+
+            const accountMenu = document.querySelector(".account-menu");
+            const dropdown = document.getElementById("accountDropdown");
+
+            if (!accountMenu.contains(event.target)) {
+                dropdown.classList.remove("show");
+            }
+
+        });
+    </script>
+
+</body>
+
+</html>
